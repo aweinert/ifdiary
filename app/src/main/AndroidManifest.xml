@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.alexanderweinert.ifdiary">
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/panda"
@@ -11,13 +9,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ShowStatisticsActivity"
-            android:label="@string/title_activity_show_statistics"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" />
+
         <activity
-            android:name=".MakeEntryActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".ShowStatisticsActivity"
+            android:label="@string/title_activity_show_statistics" />
+        <activity
+            android:name=".MakeEntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,11 +31,11 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".DataEntryNotificationDisplayer"
-            android:enabled="true">
-        </receiver>
+            android:enabled="true" />
     </application>
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 </manifest>
