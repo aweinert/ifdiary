@@ -2,5 +2,5 @@
     <string name="app_name">IFDiary</string>
     <string name="label_button_yes">Ja</string>
     <string name="label_button_no">Nein</string>
-    <string name="title_activity_show_statistics">ShowStatisticsActivity</string>
+    <string name="title_activity_show_statistics">Intermittent Fasting Progress</string>
 </resources>
