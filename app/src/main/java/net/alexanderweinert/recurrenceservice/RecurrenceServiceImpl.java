@@ -17,4 +17,12 @@ class RecurrenceServiceImpl extends RecurrenceService {
                 AlarmManager.INTERVAL_DAY, recurringNotificationDisplay);
 
     }
+
+    @Override
+    public void cancelRecurrence(Context context, Intent intent) {
+        PendingIntent recurringNotificationDisplay =
+                PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarms.cancel(recurringNotificationDisplay);
+    }
 }

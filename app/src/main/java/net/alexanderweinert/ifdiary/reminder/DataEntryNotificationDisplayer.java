@@ -1,4 +1,4 @@
-package net.alexanderweinert.ifdiary;
+package net.alexanderweinert.ifdiary.reminder;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,34 +12,15 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import net.alexanderweinert.ifdiary.MakeEntryActivity;
+import net.alexanderweinert.ifdiary.R;
 import net.alexanderweinert.recurrenceservice.RecurrenceService;
 
 import java.util.Calendar;
 
 public class DataEntryNotificationDisplayer extends BroadcastReceiver {
 
-    private final static String channelId = "IFNotificationChannel_Id";
-
-    private final static String channelName = "IFNotificationChannel";
-
-    private final static String channelDescription = "IFNotificationChannelDescription";
-
-    private static void ensureNotificationChannelExists(final Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = channelName;
-            String description = channelDescription;
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
     public static void ensureDailyNotification(final Context context) {
-        ensureNotificationChannelExists(context);
 
         Log.i("DataEntryNotificationDisplayer", "Ensuring that notification is shown daily");
 
@@ -54,7 +35,7 @@ public class DataEntryNotificationDisplayer extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ReminderServiceImpl.channelId)
                 .setSmallIcon(R.drawable.panda)
                 .setContentTitle("Intermittent Fasting")
                 .setContentText("Did you fast yesterday?")

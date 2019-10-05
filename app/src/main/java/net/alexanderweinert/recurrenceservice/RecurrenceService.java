@@ -14,4 +14,6 @@ public abstract class RecurrenceService {
      * @param intent Must refer to a class that implements {@link android.content.BroadcastReceiver}
      */
     abstract public void ensureOnceDaily(Context context, Intent intent, Calendar time);
+
+    abstract public void cancelRecurrence(Context context, Intent intent);
 }

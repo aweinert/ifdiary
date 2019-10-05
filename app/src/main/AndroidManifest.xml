@@ -32,7 +32,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".DataEntryNotificationDisplayer"
+            android:name=".reminder.DataEntryNotificationDisplayer"
             android:enabled="true" />
     </application>
 

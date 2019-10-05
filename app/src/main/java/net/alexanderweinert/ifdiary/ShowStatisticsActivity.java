@@ -1,29 +1,22 @@
 package net.alexanderweinert.ifdiary;
 
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
@@ -31,10 +24,11 @@ import net.alexanderweinert.dateservice.Date;
 import net.alexanderweinert.dateservice.DateService;
 import net.alexanderweinert.ifdiary.persistence.PersistenceService;
 import net.alexanderweinert.ifdiary.persistence.PersistenceServiceException;
+import net.alexanderweinert.ifdiary.reminder.DataEntryNotificationDisplayer;
+import net.alexanderweinert.ifdiary.reminder.ReminderService;
 import net.alexanderweinert.logging.LoggingService;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Optional;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -174,7 +168,9 @@ public class ShowStatisticsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_statistics);
 
-        DataEntryNotificationDisplayer.ensureDailyNotification(this);
+        DataEntryNotificationDisplayer.ensureDailyNotification(this.getApplicationContext());
+
+        Log.d("StatisticsActivity", "Registering preferences listener");
 
         final PieChart chart7 = findViewById(R.id.pieChart7);
         chart7.setRotationEnabled(false);
@@ -195,6 +191,20 @@ public class ShowStatisticsActivity extends AppCompatActivity {
         super.onDestroy();
         this.handler.removeCallbacks(this.pandaViewUpdater);
         this.handler.removeCallbacks(this.pieChartUpdater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final int itemId = item.getItemId();
+        switch(itemId) {
+            case R.id.action_settings:
+                final Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setPandaImage(int pandaImageId) {
