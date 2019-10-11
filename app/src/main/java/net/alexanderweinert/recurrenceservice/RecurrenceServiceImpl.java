@@ -11,7 +11,7 @@ class RecurrenceServiceImpl extends RecurrenceService {
     @Override
     public void ensureOnceDaily(final Context context, final Intent intent, final Calendar notificationTime) {
         PendingIntent recurringNotificationDisplay =
-                PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarms.setInexactRepeating(AlarmManager.RTC_WAKEUP, notificationTime.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, recurringNotificationDisplay);
@@ -21,7 +21,7 @@ class RecurrenceServiceImpl extends RecurrenceService {
     @Override
     public void cancelRecurrence(Context context, Intent intent) {
         PendingIntent recurringNotificationDisplay =
-                PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarms.cancel(recurringNotificationDisplay);
     }
