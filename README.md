@@ -3,7 +3,8 @@
 This is a simple android app that sends the user a daily notification at 6 AM and queries them whether they kept to intermittent fasting yesterday.
 Depending on the response, it shows one of two images.
 Independently of the response, it shows statistics over fasting for the past 7 days and for the past 30 days.
-I only use this app privately and give no guarantee that it can be used for any purpose and on any device other than my personal ones.
+This app is only intended for my personal use, hence its target platform is rather well defined: It is supposed to run on a Samsung Galaxy S7 running Android 8.0.0.
+If any part of this app is functional on any other platform, this is more of a happy coincidence than anything else.
 
 ## Building and Running
 
