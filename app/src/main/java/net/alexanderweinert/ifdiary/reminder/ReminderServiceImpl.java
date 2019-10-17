@@ -47,10 +47,10 @@ class ReminderServiceImpl extends ReminderService {
         if (shouldShowReminder) {
             ensureNotificationChannelExists(context);
             Calendar updateTime = Calendar.getInstance();
-            updateTime.set(Calendar.HOUR_OF_DAY,6);
-            updateTime.set(Calendar.MINUTE,0);
+            updateTime.set(Calendar.HOUR_OF_DAY, settingsService.getReminderHour());
+            updateTime.set(Calendar.MINUTE, settingsService.getReminderMinutes());
 
-            Log.d(loggerTag, "Ensuring daily reminder");
+            Log.d(loggerTag, String.format("Ensuring daily reminder at %02d:%02d", settingsService.getReminderHour(), settingsService.getReminderMinutes()));
             recurrenceService.ensureOnceDaily(context, notificationDisplayIntent, updateTime);
         } else {
             Log.d(loggerTag, "Cancelling daily reminder");

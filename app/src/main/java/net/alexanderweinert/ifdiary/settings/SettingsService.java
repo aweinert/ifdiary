@@ -18,4 +18,8 @@ public abstract class SettingsService {
 
     abstract public boolean shouldShowReminder();
     abstract public void setShouldShowReminder(boolean shouldShowReminder);
+
+    abstract public int getReminderHour();
+    abstract public int getReminderMinutes();
+    abstract public void setReminderTime(int hours, int minutes);
 }

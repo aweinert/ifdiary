@@ -1,5 +1,6 @@
 package net.alexanderweinert.ifdiary;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import net.alexanderweinert.ifdiary.reminder.ReminderService;
+import net.alexanderweinert.ifdiary.settings.SettingsService;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -36,6 +38,8 @@ public class SettingsActivity extends AppCompatActivity {
         final int itemId = item.getItemId();
         switch(itemId) {
             case android.R.id.home:
+                final Context applicationContext = this.getApplicationContext();
+                ReminderService.getInstance().applySettings(applicationContext, SettingsService.getInstance(applicationContext));
                 finish();
                 break;
             default:

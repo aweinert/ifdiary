@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -14,6 +15,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import net.alexanderweinert.ifdiary.MakeEntryActivity;
 import net.alexanderweinert.ifdiary.R;
+import net.alexanderweinert.ifdiary.settings.SettingsService;
 import net.alexanderweinert.recurrenceservice.RecurrenceService;
 
 import java.util.Calendar;
@@ -24,9 +26,10 @@ public class DataEntryNotificationDisplayer extends BroadcastReceiver {
 
         Log.i("DataEntryNotificationDisplayer", "Ensuring that notification is shown daily");
 
+        final SettingsService settingsService = SettingsService.getInstance(context);
         Calendar updateTime = Calendar.getInstance();
-        updateTime.set(Calendar.HOUR_OF_DAY,6);
-        updateTime.set(Calendar.MINUTE,0);
+        updateTime.set(Calendar.HOUR_OF_DAY, settingsService.getReminderHour());
+        updateTime.set(Calendar.MINUTE, settingsService.getReminderMinutes());
 
         Intent notificationDisplayIntent = new Intent(context, DataEntryNotificationDisplayer.class);
 

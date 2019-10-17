@@ -1,5 +1,6 @@
 package net.alexanderweinert.ifdiary;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -26,6 +27,7 @@ import net.alexanderweinert.ifdiary.persistence.PersistenceService;
 import net.alexanderweinert.ifdiary.persistence.PersistenceServiceException;
 import net.alexanderweinert.ifdiary.reminder.DataEntryNotificationDisplayer;
 import net.alexanderweinert.ifdiary.reminder.ReminderService;
+import net.alexanderweinert.ifdiary.settings.SettingsService;
 import net.alexanderweinert.logging.LoggingService;
 
 import java.util.ArrayList;
@@ -168,9 +170,9 @@ public class ShowStatisticsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_statistics);
 
-        DataEntryNotificationDisplayer.ensureDailyNotification(this.getApplicationContext());
+        final Context applicationContext = this.getApplicationContext();
 
-        Log.d("StatisticsActivity", "Registering preferences listener");
+        ReminderService.getInstance().applySettings(applicationContext, SettingsService.getInstance(applicationContext));
 
         final PieChart chart7 = findViewById(R.id.pieChart7);
         chart7.setRotationEnabled(false);
