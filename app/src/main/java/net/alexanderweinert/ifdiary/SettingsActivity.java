@@ -38,13 +38,18 @@ public class SettingsActivity extends AppCompatActivity {
         final int itemId = item.getItemId();
         switch(itemId) {
             case android.R.id.home:
-                final Context applicationContext = this.getApplicationContext();
-                ReminderService.getInstance().applySettings(applicationContext, SettingsService.getInstance(applicationContext));
                 finish();
                 break;
             default:
                 throw new IllegalArgumentException();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPause() {
+        final Context applicationContext = this.getApplicationContext();
+        ReminderService.getInstance().applySettings(applicationContext, SettingsService.getInstance(applicationContext));
+        super.onPause();
     }
 }
