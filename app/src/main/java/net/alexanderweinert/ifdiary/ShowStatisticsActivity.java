@@ -2,13 +2,12 @@ package net.alexanderweinert.ifdiary;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,11 +24,14 @@ import net.alexanderweinert.dateservice.Date;
 import net.alexanderweinert.dateservice.DateService;
 import net.alexanderweinert.ifdiary.persistence.PersistenceService;
 import net.alexanderweinert.ifdiary.persistence.PersistenceServiceException;
-import net.alexanderweinert.ifdiary.reminder.DataEntryNotificationDisplayer;
 import net.alexanderweinert.ifdiary.reminder.ReminderService;
 import net.alexanderweinert.ifdiary.settings.SettingsService;
 import net.alexanderweinert.logging.LoggingService;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -42,6 +44,8 @@ import pl.droidsonroids.gif.GifImageView;
  */
 public class ShowStatisticsActivity extends AppCompatActivity {
 
+    private static final String SUCCESS_FILE_NAME = "success.gif";
+    private static final String FAILURE_FILE_NAME = "failure.gif";
     private final String COLOR_GREEN = "228B22";
     private final String COLOR_RED = "B22222";
     private final String COLOR_GRAY = "C0C0C0";
@@ -90,9 +94,27 @@ public class ShowStatisticsActivity extends AppCompatActivity {
                 return;
             }
 
+            /*
+            try {
+                this.getApplicationContext().openFileInput("happy.gif");
+            } catch (FileNotFoundException e) {
+                final Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.setType("image/*");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                startActivityForResult(intent, 1);
+            }
+            */
             final int pandaImageId = (fasted ? R.drawable.panda_happy : R.drawable.panda_sad);
             setPandaImage(pandaImageId);
             showPandaView();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Uri fullPhotoUri = data.getData();
         }
     }
 
@@ -174,18 +196,33 @@ public class ShowStatisticsActivity extends AppCompatActivity {
 
         ReminderService.getInstance().applySettings(applicationContext, SettingsService.getInstance(applicationContext));
 
-        final PieChart chart7 = findViewById(R.id.pieChart7);
-        chart7.setRotationEnabled(false);
-        chart7.animateY(1000);
-        chart7.getLegend().setEnabled(false);
+        //if (!fileExistsForReading(SUCCESS_FILE_NAME)) {
+            //queryUserForFile(SUCCESS_FILE_NAME);
+        //}
 
-        final PieChart chart30 = findViewById(R.id.pieChart30);
-        chart30.setRotationEnabled(false);
-        chart30.animateY(1000);
-        chart30.getLegend().setEnabled(false);
+        //if (!fileExistsForReading(FAILURE_FILE_NAME)) {
+            //queryUserForFile(FAILURE_FILE_NAME);
+        //}
+
+        configurePieChart((PieChart) findViewById(R.id.pieChart7));
+        configurePieChart((PieChart) findViewById(R.id.pieChart30));
 
         handler.post(this.pandaViewUpdater);
         handler.post(this.pieChartUpdater);
+    }
+
+    private boolean fileExistsForReading(String successFileName) throws IOException {
+        try (final FileInputStream successFile = this.getApplicationContext().openFileInput(successFileName)) {
+            return true;
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+    }
+
+    private void configurePieChart(PieChart chart) {
+        chart.setRotationEnabled(false);
+        chart.animateY(1000);
+        chart.getLegend().setEnabled(false);
     }
 
     @Override
@@ -209,10 +246,10 @@ public class ShowStatisticsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setPandaImage(int pandaImageId) {
+    private void setPandaImage(int imageId) {
         final GifImageView pandaView = findViewById(R.id.pandaView);
         pandaView.setImageResource(0);
-        pandaView.setImageResource(pandaImageId);
+        pandaView.setImageResource(imageId);
     }
 
     private void hidePandaView() {

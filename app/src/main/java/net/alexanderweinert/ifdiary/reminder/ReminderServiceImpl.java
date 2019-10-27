@@ -41,7 +41,7 @@ class ReminderServiceImpl extends ReminderService {
     public void applySettings(final Context context, final SettingsService settingsService) {
 
         final RecurrenceService recurrenceService = RecurrenceService.getInstance();
-        final Intent notificationDisplayIntent = new Intent(context, DataEntryNotificationDisplayer.class);
+        final Intent notificationDisplayIntent = new Intent(context, ReminderDisplayer.class);
 
         final boolean shouldShowReminder = settingsService.shouldShowReminder();
         if (shouldShowReminder) {
