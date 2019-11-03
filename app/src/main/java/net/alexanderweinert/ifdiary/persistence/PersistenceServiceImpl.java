@@ -11,7 +11,7 @@ import java.util.Optional;
 
 class PersistenceServiceImpl extends PersistenceService {
 
-    final IFDatabase database;
+    private final IFDatabase database;
 
     public PersistenceServiceImpl(Context context) {
         this.database = Room.databaseBuilder(context, IFDatabase.class, "database")
@@ -27,16 +27,20 @@ class PersistenceServiceImpl extends PersistenceService {
 
     @Override
     public Optional<Boolean> hasFasted(Date date) throws PersistenceServiceException {
-        final DBEntry dbEntry = this.database.dbEntryDAO().getEntryForDate(date.getYear(), date.getMonth(), date.getDay());
-        if(dbEntry == null) {
+        /*
+        final FastingDEO deo = this.database.fastingDao().getEntryForDate(date.getYear(), date.getMonth(), date.getDay());
+        if(deo == null) {
             return Optional.empty();
         } else {
-            return Optional.of(dbEntry.isFasted());
+            return Optional.of(deo.isFasted());
         }
+         */
+        return null;
     }
 
     @Override
     public void setFasting(Date date, boolean hasFasted) throws PersistenceServiceException {
+        /*
         final DBEntry entry = DBEntry.builder()
                 .year(date.getYear())
                 .month(date.getMonth())
@@ -46,5 +50,6 @@ class PersistenceServiceImpl extends PersistenceService {
 
         final List<DBEntry> list = this.database.dbEntryDAO().getAllDbEntries();
         this.database.dbEntryDAO().insert(entry);
+         */
     }
 }
