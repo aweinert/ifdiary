@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "3b255299b5d28b68f7f9b92fcfe66be6",
+    "identityHash": "e5e1f6eb7c01201622cc14cb22e1ccdc",
     "entities": [
       {
         "tableName": "DateDEO",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "FastingDEO",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date_id` INTEGER NOT NULL, `firstMealStartInMinutes` INTEGER NOT NULL, `lastMealStartInMinutes` INTEGER NOT NULL, FOREIGN KEY(`date_id`) REFERENCES `DateDEO`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date_id` INTEGER NOT NULL, `firstMealStartInMinutes` INTEGER NOT NULL, `lastMealEndInMinutes` INTEGER NOT NULL, FOREIGN KEY(`date_id`) REFERENCES `DateDEO`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -65,8 +65,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "lastMealStartInMinutes",
-            "columnName": "lastMealStartInMinutes",
+            "fieldPath": "lastMealEndInMinutes",
+            "columnName": "lastMealEndInMinutes",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -140,7 +140,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3b255299b5d28b68f7f9b92fcfe66be6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e5e1f6eb7c01201622cc14cb22e1ccdc')"
     ]
   }
 }

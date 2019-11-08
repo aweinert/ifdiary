@@ -18,5 +18,5 @@ class FastingDEO {
     public int firstMealStartInMinutes;
 
     @ColumnInfo
-    public int lastMealStartInMinutes;
+    public int lastMealEndInMinutes;
 }
