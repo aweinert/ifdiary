@@ -16,7 +16,7 @@
             android:name=".ShowStatisticsActivity"
             android:label="@string/title_activity_show_statistics" />
         <activity
-            android:name=".MakeEntryActivity">
+            android:name=".DataEntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

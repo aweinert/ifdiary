@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,11 +15,38 @@ import net.alexanderweinert.ifdiary.persistence.PersistenceService;
 import net.alexanderweinert.ifdiary.persistence.PersistenceServiceException;
 import net.alexanderweinert.logging.LoggingService;
 
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.Optional;
+import java.util.function.Function;
 
-public class MakeEntryActivity extends AppCompatActivity {
+public class DataEntryActivity extends AppCompatActivity {
+
+    private static DateService dateService = DateService.instance();
+
+    private static Function<Context, PersistenceService> persistenceServiceFactory = new Function<Context, PersistenceService>() {
+        @Override
+        public PersistenceService apply(Context context) {
+            return PersistenceService.instance(context);
+        }
+    };
+
+    private static LoggingService loggingService = LoggingService.instance();
+
+    public static DateService bindDateService(final DateService dateService) {
+        final DateService oldService = DataEntryActivity.dateService;
+        DataEntryActivity.dateService = dateService;
+        return oldService;
+    }
+
+    public static Function<Context,PersistenceService> bindPersistenceServiceFactory(Function<Context, PersistenceService> persistenceServiceFactory) {
+        final Function<Context, PersistenceService> previousPersistenceServiceFactory = DataEntryActivity.persistenceServiceFactory;
+        DataEntryActivity.persistenceServiceFactory = persistenceServiceFactory;
+        return previousPersistenceServiceFactory;
+    }
+
+    public static LoggingService bindLoggingService(LoggingService newLoggingService) {
+        final LoggingService oldLoggingService = DataEntryActivity.loggingService;
+        DataEntryActivity.loggingService = newLoggingService;
+        return oldLoggingService;
+    }
 
     Date relevantDate = null;
 
@@ -33,7 +59,7 @@ public class MakeEntryActivity extends AppCompatActivity {
      * that it queries for the fasting status for the given date
      */
     public static Intent buildIntent(Context context, Date date) {
-        final Intent returnValue = new Intent(context, MakeEntryActivity.class);
+        final Intent returnValue = new Intent(context, DataEntryActivity.class);
 
         returnValue.putExtra(EXTRA_NAME_DATE, date);
 
@@ -43,14 +69,14 @@ public class MakeEntryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_make_entry);
+        setContentView(R.layout.activity_data_entry);
 
-        relevantDate = DateService.instance().getYesterday();
+        relevantDate = this.dateService.getYesterday();
 
         boolean entryExistsForYesterday = false;
         try {
             entryExistsForYesterday =
-                    PersistenceService.instance(this.getApplicationContext()).fastingStored(relevantDate);
+                    this.persistenceServiceFactory.apply(this.getApplicationContext()).fastingStored(relevantDate);
         } catch (PersistenceServiceException e) {
             LoggingService.instance().error("Error ", e);
         }
@@ -81,7 +107,7 @@ public class MakeEntryActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    PersistenceService.instance(getApplicationContext()).setFasting(relevantDate, hasFasted);
+                    persistenceServiceFactory.apply(getApplicationContext()).setFasting(relevantDate, hasFasted);
                 } catch (PersistenceServiceException e) {
                     LoggingService.instance().error("Error", e);
                 }
