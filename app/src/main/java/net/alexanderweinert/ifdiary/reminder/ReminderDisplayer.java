@@ -10,7 +10,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import net.alexanderweinert.dateservice.DateService;
-import net.alexanderweinert.ifdiary.MakeEntryActivity;
+import net.alexanderweinert.ifdiary.DataEntryActivity;
 import net.alexanderweinert.ifdiary.R;
 import net.alexanderweinert.ifdiary.persistence.PersistenceService;
 import net.alexanderweinert.ifdiary.persistence.PersistenceServiceException;
@@ -44,7 +44,7 @@ public class ReminderDisplayer extends BroadcastReceiver {
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        final Intent tapIntent = new Intent(context, MakeEntryActivity.class);
+        final Intent tapIntent = new Intent(context, DataEntryActivity.class);
         final PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, tapIntent, 0);
         builder.setContentIntent(pendingIntent);
 
